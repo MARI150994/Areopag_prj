@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Описание схемы{{% endblock %}
+{% block content %}
+    <h1>Выберите модели используемого оборудования</h1>
+    {{ data }}
+    <form>
+    {% csrf_token %}
+    {% for el in data %}
+        <select>
+            {% for i in el %}
+            <option>{{ i.model_name }}</option>
+            {% endfor %}
+        </select>
+    {% endfor %}
+    </form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelsome/fontawesome-free@5.15.4/css/fontawesome.min.css">
+</head>
+<body>
+    <aside>
+        <h3>Опции контента</h3>
+        <ul>
+            <a href="{% url 'index' %}"><li><i class="fa-duotone fa-house-user"></i>Главная</li></a>
+            <a href="{% url 'scheme' %}"><li>Схема</li></a>
+            <a href='#'><li>Тепловой расчет</li></a>
+        </ul>
+        <i class="fa-duotone fa-house-user"></i>
+    </aside>
+    <main>{% block content %}{% endblock %}</main>
+</body>
+</html>
