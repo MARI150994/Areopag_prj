@@ -1,5 +1,14 @@
 from django.db import models
 
+CATEGORY_CHOICES = (
+    ('EA', 'Двигатели асинхронные'),
+    ('SP', 'Датчики давления'),
+    ('G', 'Гусары'),
+    ('EG', 'Расходомеры'),
+    ('CI', 'Кабельные ввода'),
+    ('ST', 'Датчики температуры'),
+    ('A', 'Задвижки с электроманитным управлением')
+)
 
 class Equipment(models.Model):
     """
@@ -9,7 +18,7 @@ class Equipment(models.Model):
     Датчик температуры
     ...
     """
-    category = models.CharField(max_length=30)
+    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='EA')
 
     def __str__(self):
         return self.category
