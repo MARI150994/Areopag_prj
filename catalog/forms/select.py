@@ -1,8 +1,15 @@
 from django import forms
-from catalog.models import Equipment, CATEGORY_CHOICES
+from django.forms import ModelForm, ModelChoiceField
+from catalog.models import Equipment, Init
 
 
-class SelectCategory(forms.Form):
-    category = forms.MultipleChoiceField(choices=CATEGORY_CHOICES,
-                                         widget=forms.CheckboxSelectMultiple,
-                                         label="Выберите категории используемого оборудования")
+class SelectCategory(ModelForm):
+    class Meta:
+        model = Equipment
+        fields = ['category']
+        widgets = {
+            'category': forms.CheckboxSelectMultiple
+        }
+
+class SelectModels(forms.Form):
+    select = forms.ModelChoiceField(queryset=Equipment.objects.get(pk=1).init_set.all())

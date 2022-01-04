@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="{% static 'CSS/test.css' %}">
 {% block title %}Выбор категорий оборудования{% endblock %}
 {% block content %}
+        <form action="{% url "result" %}" method="post">
         {% csrf_token %}
-        <form action="">
         {{ form }}
         <input type="submit" value="Submit" />
         </form>
