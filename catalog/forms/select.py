@@ -12,4 +12,14 @@ class SelectCategory(ModelForm):
         }
 
 class SelectModels(forms.Form):
-    select = forms.ModelChoiceField(queryset=Equipment.objects.get(pk=1).init_set.all())
+    #select = forms.ModelChoiceField(queryset=Equipment.objects.get(category='Двигатели асинхронные').init_set.all())
+    select = forms.ModelChoiceField(queryset=None, label='')
+
+    def __init__(self, cat, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['select'].queryset = Equipment.objects.get(category=cat).init_set.all()
+
+#class SelectModels(ModelForm):
+ #   class Meta:
+  #      model = Init
+   #     fields = ['model_name']

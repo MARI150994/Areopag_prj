@@ -6,10 +6,6 @@ from django.urls import reverse
 
 
 def index(request):
-    """
-    :param request: 
-    :return: home page with all options
-    """""
     menu = "Составить описание схемы"
     return render(
         request,
@@ -36,19 +32,21 @@ def scheme(request):
 
 
 def result(request):
-        #selection = request.POST.getlist('category')
-        data = []
+        data = request.POST.getlist('category')
+        #data = []
         #for i in selection:
         #    data.append(Equipment(pk=i))
         #j = Equipment(pk=1)
         #a = Equipment.objects.get(pk=1)
         #aa = a.init_set.all()
-        form = SelectModels()
-
+        form_list = []
+        for el in data:
+            form_list.append(SelectModels(cat=el))
+        #form = SelectModels(cat=data[0])
         return render(
             request, 'result.html',
             {
                 'data': data,
-                'form': form
+                'form': form_list
             }
         )
