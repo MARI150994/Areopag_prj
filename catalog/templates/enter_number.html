@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Выберите количество оборудования{{% endblock %}
+{% block content %}
+        <h2>Установите количество используемого оборудования</h2>
+        <p>Вы выбрали следующие категориии оборудования: {{ data }}</p>
+        <form action="{% url 'result' %}" method="post">
+        {% csrf_token %}
+            {% for el in form %}
+                <div>{{ el }}</div>
+            {% endfor %}
+        <input type="submit" value="Далее" />
+        </form>
+{% endblock %}

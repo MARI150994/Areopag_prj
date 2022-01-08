@@ -1,7 +1,11 @@
 from django import forms
-from django.forms import ModelForm, ModelChoiceField
+from django.forms import ModelForm, ModelChoiceField, IntegerField, HiddenInput
 from catalog.models import Equipment, Init
+from django.forms import formset_factory
 
+
+class EnterNumber(forms.Form):
+    number = IntegerField(min_value=1, max_value=30, label='Введите число единиц оборудования')
 
 class SelectCategory(ModelForm):
     class Meta:

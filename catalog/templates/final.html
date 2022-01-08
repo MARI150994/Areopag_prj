@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-{% block title %}Описание схемы{{% endblock %}
+{% block title %}Финальное описание схемы{{% endblock %}
 {% block content %}
         <p>{{ data }}</p>
-        <p>{{ data_cat }}</p>
         <form action="{% url 'final' %}" method="post">
         {% csrf_token %}
             {% for i in form %}
