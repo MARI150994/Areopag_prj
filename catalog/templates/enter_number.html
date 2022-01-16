@@ -3,10 +3,11 @@
 {% block content %}
         <h2>Установите количество используемого оборудования</h2>
         <p>Вы выбрали следующие категориии оборудования: {{ data }}</p>
-        <form action="{% url 'result' %}" method="post">
+        <form action="{% url 'select_models' %}" method="post">
         {% csrf_token %}
             {% for el in form %}
                 <div>{{ el }}</div>
+                <p>{{ el.errors }}</p>
             {% endfor %}
         <input type="submit" value="Далее" />
         </form>

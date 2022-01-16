@@ -2,6 +2,7 @@
 {% block title %}Финальное описание схемы{{% endblock %}
 {% block content %}
         <p>{{ data }}</p>
+        <p>{{ data_test }}</p>
         <form action="{% url 'final' %}" method="post">
         {% csrf_token %}
             {% for i in form %}
