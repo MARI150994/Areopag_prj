@@ -9,6 +9,7 @@ class EnterNumber(forms.Form):
     number = IntegerField(min_value=1, max_value=30)
     category = CharField(widget=HiddenInput())
 
+
 class SelectCategory(ModelForm):
     class Meta:
         model = Equipment
@@ -16,6 +17,7 @@ class SelectCategory(ModelForm):
         widgets = {
             'category': forms.CheckboxSelectMultiple
         }
+
 
 class SelectModels(forms.Form):
     #select = forms.ModelChoiceField(queryset=Equipment.objects.get(category='Двигатели асинхронные').init_set.all())

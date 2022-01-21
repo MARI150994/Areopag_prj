@@ -33,5 +33,25 @@ class Init(models.Model):
     init_port = models.CharField(max_length=20, help_text="necessary port like: AC1, AC2, DC1")
     additional_port = models.CharField(max_length=30, blank=True, help_text="list of additional ports like: AC1, AC2, DC1")
 
+    def list_of_necessary_ports(self):
+        """Return list of necessary port"""
+        necessary_port = self.init_port.split(' ')
+        return necessary_port
+
+    def list_of_optional_ports(self):
+        if self.additional_port:
+            return self.additional_port.split(' ')
+        else:
+            return None
+
     def __str__(self):
         return self.model_name
+
+
+class Cable(models.Model):
+    natural_name = models.CharField(max_length=50, help_text='real name like "ВВГнг-14х1,5"')
+    init_name = models.CharField(max_length=50, help_text='system name for scheme initialization like "VVG_NG_1x1,5"')
+
+    def __str__(self):
+        return self.natural_name
+

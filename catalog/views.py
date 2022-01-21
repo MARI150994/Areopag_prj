@@ -13,8 +13,9 @@ def index(request):
         context={'menu': menu}
     )
 
+
 def choice_category(request):
-    #choice category
+    # choice category
     if request.method == "POST":
         form = SelectCategory(request.POST)
         if form.is_valid():
@@ -23,8 +24,9 @@ def choice_category(request):
         form = SelectCategory()
     return render(request, 'choice_category.html', {'form': form})
 
+
 def enter_number(request):
-    #enter number equipment of choisen category
+    # enter number equipment of choisen category
     data = request.POST.getlist('category')
     forms = []
     if request.method == 'POST':
@@ -38,28 +40,39 @@ def enter_number(request):
         form = EnterNumber()
     return render(request, 'enter_number.html', {'form': forms, 'data': data})
 
+
 def select_models(request):
-        #take a list of select category from enter_number func
-        #data = enter_number.data
-        data = request.POST.getlist('category')
-        # take a list of number of category from form
-        number_models = request.POST.getlist('number')
-        if request.method == 'POST':
-            form_list = []
-            for el in range(len(number_models)):
-                for i in range(int(number_models[el])):
-                    form_list.append(SelectModels(cat=data[el]))
-            return render(
-                request, 'result.html',
-                {
-                    'data': number_models,
-                    'data_cat': data,
-                    'form': form_list,
-                }
-            )
-        else:
-            return render(request, 'result.html', {'data': data, 'data_test': data_test})
+    # take a list of select category from enter_number func
+    # data = enter_number.data
+    data = request.POST.getlist('category')
+    # take a list of number of category from form
+    number_models = request.POST.getlist('number')
+    if request.method == 'POST':
+        form_list = []
+        for el in range(len(number_models)):
+            for i in range(int(number_models[el])):
+                form_list.append(SelectModels(cat=data[el]))
+        return render(
+            request, 'result.html',
+            {
+                'data': number_models,
+                'data_cat': data,
+                'form': form_list,
+            }
+        )
+    else:
+        return render(request, 'result.html', {'data': data, 'data_test': data_test})
+
 
 def final(request):
-    data = request.POST.getlist('select')
-    return render(request, 'final.html', {'data': data})
+    models_id = request.POST.getlist('select')
+    forms = []
+    for f in models_id:
+        forms.append(Init.objects.get(pk=f))
+    ports_of_models = {}
+    for model in models_id:
+        model_obj = Init.objects.get(pk=model)
+        model_ports = model_obj.list_of_necessary_ports()
+        model_name = model_obj.model_name
+        ports_of_models.update({model_name: model_ports})
+    return render(request, 'final.html', {'data': models_id, 'ports': ports_of_models, 'forms': forms})

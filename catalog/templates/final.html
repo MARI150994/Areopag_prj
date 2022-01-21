@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}Финальное описание схемы{{% endblock %}
 {% block content %}
-        <p>{{ data }}</p>
-        <p>{{ data_test }}</p>
-        <form action="{% url 'final' %}" method="post">
-        {% csrf_token %}
-            {% for i in form %}
-                <div>
-                    {{ i }}
-                </div>
+    {% for el in forms %}
+        <div>
+            <select>
+            <option>{{ el.model_name }}</option>
+            {% for i in el.list_of_necessary_ports %}
+                <p>{{ i }}</p>
             {% endfor %}
+            {% if el.list_of_optional_ports %}
+                <p>Опциональные порты:</p>
+                {% for i in el.list_of_optional_ports %}
+                    <p>{{ i }}</p>
+                {% endfor %}
+            {% endif %}
+            </select>
+        </div>
+    {% endfor %}
+    <form action="#" method="post">
+        {% csrf_token %}
+        {% for i in form %}
+            <div>
+                {{ i }}
+            </div>
+        {% endfor %}
         <input type="submit" value="Submit" />
-        </form>
+    </form>
 {% endblock %}
