@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}Финальное описание схемы{{% endblock %}
 {% block content %}
-    {% for el in forms %}
+    {% for form in forms %}
         <div>
-            <select>
-            <option>{{ el.model_name }}</option>
-            {% for i in el.list_of_necessary_ports %}
-                <p>{{ i }}</p>
+            <p>Доступные порты модели{{ form.model_name }}: </p>
+            {% for port in form.list_of_necessary_ports %}
+                <p>{{ port }}</p>
             {% endfor %}
-            {% if el.list_of_optional_ports %}
-                <p>Опциональные порты:</p>
-                {% for i in el.list_of_optional_ports %}
-                    <p>{{ i }}</p>
+            {% if form.list_of_optional_ports %}
+                <p>Опциональные порты: </p>
+                {% for add_port in form.list_of_optional_ports %}
+                <p>{{ add_port }}</p>
                 {% endfor %}
             {% endif %}
-            </select>
         </div>
     {% endfor %}
     <form action="#" method="post">

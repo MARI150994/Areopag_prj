@@ -7,7 +7,7 @@ CATEGORY_CHOICES = (
     ('Расходомеры', 'Расходомеры'),
     ('Кабельные ввода', 'Кабельные ввода'),
     ('Датчики температуры', 'Датчики температуры'),
-    ('Задвижки с электроманитным управлением', 'Задвижки с электроманитным управлением')
+    ('Задвижки с электроманитным управлением', 'Задвижки с электроманитным управлением'),
 )
 
 class Equipment(models.Model):
@@ -18,7 +18,7 @@ class Equipment(models.Model):
     Датчик температуры
     ...
     """
-    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES, default='EA')
+    category = models.CharField(max_length=40, choices=CATEGORY_CHOICES, verbose_name='Категории оборудования', default='Двигатели асинхронные')
 
     def __str__(self):
         return self.category

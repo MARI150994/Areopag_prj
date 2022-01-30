@@ -9,6 +9,9 @@
                 <div>{{ el }}</div>
                 <p>{{ el.errors }}</p>
             {% endfor %}
+        <label>Введите количество точек подключения (кол-во кабельных вводов на шкафу или коробках):
+                <input type="number" name="entry_port" />
+        </label><br>
         <input type="submit" value="Далее" />
         </form>
 {% endblock %}

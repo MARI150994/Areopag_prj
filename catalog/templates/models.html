@@ -4,11 +4,12 @@
         <p>{{ data }}</p>
         <p>{{ data_cat }}</p>
         <p>{{ data_test }}</p>
+        <h3>Выберите модели оборудования:</h3>
         <form action="{% url 'final' %}" method="post">
         {% csrf_token %}
-            {% for i in form %}
+            {% for form in forms %}
                 <div>
-                    {{ i }}
+                    {{ form }}
                 </div>
             {% endfor %}
         <input type="submit" value="Submit" />

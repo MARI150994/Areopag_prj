@@ -13,7 +13,7 @@ class EnterNumber(forms.Form):
 class SelectCategory(ModelForm):
     class Meta:
         model = Equipment
-        fields = ['category']
+        fields = '__all__'
         widgets = {
             'category': forms.CheckboxSelectMultiple
         }

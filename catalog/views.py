@@ -43,7 +43,6 @@ def enter_number(request):
 
 def select_models(request):
     # take a list of select category from enter_number func
-    # data = enter_number.data
     data = request.POST.getlist('category')
     # take a list of number of category from form
     number_models = request.POST.getlist('number')
@@ -53,26 +52,23 @@ def select_models(request):
             for i in range(int(number_models[el])):
                 form_list.append(SelectModels(cat=data[el]))
         return render(
-            request, 'result.html',
+            request, 'models.html',
             {
                 'data': number_models,
                 'data_cat': data,
-                'form': form_list,
+                'forms': form_list,
             }
         )
     else:
-        return render(request, 'result.html', {'data': data, 'data_test': data_test})
+        return render(request, 'models.html', {'data': data, 'data_test': data_test})
 
 
 def final(request):
+    #id of selected models
     models_id = request.POST.getlist('select')
     forms = []
-    for f in models_id:
-        forms.append(Init.objects.get(pk=f))
-    ports_of_models = {}
-    for model in models_id:
-        model_obj = Init.objects.get(pk=model)
-        model_ports = model_obj.list_of_necessary_ports()
-        model_name = model_obj.model_name
-        ports_of_models.update({model_name: model_ports})
-    return render(request, 'final.html', {'data': models_id, 'ports': ports_of_models, 'forms': forms})
+    for id in models_id:
+        forms.append(Init.objects.get(pk=id))
+    #count category "кабельные вводы"
+    #cable_enter =
+    return render(request, 'final.html', {'data': models_id, 'forms': forms})
