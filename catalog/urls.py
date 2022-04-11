@@ -1,10 +1,17 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.index, name='index'),
-    path('category/', views.choice_category, name='choice_category'),
-    path('category/numbers', views.enter_number, name='enter_number'),
-    path('category/numbers/models', views.select_models, name='select_models'),
-    path('category/result/final', views.final, name='final')
+    path('profile/', views.user_profile, name='user_profile'),
+    path('create_project/', views.CreateProject.as_view(), name='create_project'),
+    path('projects/', views.ProjectsListUser.as_view(), name='projects'),
+    path('all-projects/', views.ProjectsListAll.as_view(), name='projects_all'),
+    path('project/<str:slug>/', views.ProjectDetail.as_view(), name='project_detail'),
+    path('project/<str:slug>/category', views.select_category, name='select_category'),
+    path('project/<str:slug>/numbers', views.count_category, name='count_category'),
+    path('project/<str:slug>/models', views.SelectModel.as_view(), name='select_models'),
+    path('project/<str:slug>/scheme', views.CreateScheme.as_view(), name='create_scheme'),
+    # path('project/<str:slug>/scheme_item/<int:pk>/edit', views.SchemeItemEdit.as_view(), name='scheme_item_edit'),
 ]

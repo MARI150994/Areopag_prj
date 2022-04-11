@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% block title %}
+  Категории оборудования
+{% endblock %}
+
+{% block content %}
+{% include 'include/project_info.html' %}  
+
+  <form method="get" action={% url 'count_category' slug=prj.slug %} >
+          {% for field in form %}
+            <h4 class="text-secondary">Шаг1. Выберите оборудование которое используется в проекте:</h4>
+            {% for choice in field %}
+              <div class="form-check mt-3 text-dark">
+              {{ choice }}
+              </div>
+            {% endfor %}
+          {% endfor %}
+          <div class="input-group mt-5">
+            <button class="btn btn-outline-primary" type="submit">Далее</button>
+          </div>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Создание проекта{% endblock %}
+{% block content %}
+  {% if request.user.is_authenticated %}
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        {% if field.errors %}
+          {{ field.errors }}
+        {% endif %}
+        <div class="form-check mt-3 mb-3 text-dark">
+          <label for="{{ field.auto_id }}" class="form-label">{{ field.label }} :</label>
+            {{ field }}
+        </div>
+      {% endfor %}
+      <button class="btn btn-outline-primary" type="submit">Ок</button>
+    </form>
+  {% else %}
+  <p>Для создания проекта вам необходимо авторизоваться.</p>
+  {% endif %}
+{% endblock %}

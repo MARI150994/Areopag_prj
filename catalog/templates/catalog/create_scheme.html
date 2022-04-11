@@ -1,0 +1,55 @@
+projects_all.html{% extends 'catalog/base.html' %}
+{% block title %}Финальное описание схемы{{% endblock %}
+{% block content %}
+{% include 'include/project_info.html' %} 
+    <h3 class="text-secondary">Соотнесите порты моделей с портами подключения к электрошкафу:</h3>
+    <form method="post">
+      {% csrf_token %}
+      {% if custom_errors %}
+        {% for error in custom_errors %}
+          <div class="alert alert-danger">
+              <strong>Наименование {{ error }} дублируется! </strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% for form, model, port in forms_test %}
+        <table class="table table-striped mt-5" style="background-color: #4bf2f240">
+
+          <thead>
+            <tr>
+              <td class="table-primary" scope="col">#</td>
+              <td class="table-primary" scope="col">Подключение "{{ model.symbol }}"</td>
+              <td class="table-primary" scope="col">Кабель </td>
+              <td class="table-primary" scope="col">Номер кабеля </td>
+              <td class="table-primary" scope="col">Место подключения</td>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr>
+              {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+              <td>{{ forloop.counter }}</td>
+              <td>{{ port }}</td>
+              {% for field in form %}
+                <td>
+                {% if field.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    {{ field.errors }}
+                  </div>
+                {% endif %}
+                {{ field }}
+                </td>
+              
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      {% endfor %}
+  
+    <button class="btn btn-outline-secondary" type="submit">Далее</button>
+    </form>
+{% endblock %}

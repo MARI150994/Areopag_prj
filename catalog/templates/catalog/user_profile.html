@@ -1,0 +1,20 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+  <div class="card" style="width: 18rem;">
+    <div class="card-header">
+      Профиль {{ user.username }}
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Имя: {{ user.first_name }}</li>
+      <li class="list-group-item">Фамилия: {{ user.last_name }}</li>
+      <li class="list-group-item">Email: {{ user.email }}</li>
+      <li class="list-group-item">Дата регстрации: {{ user.date_joined_0 }}</li>
+    </ul>
+  </div>
+    <div class='container mt-4'>
+      <a href={% url 'account_change_password' %} class="btn btn-outline-primary">Изменить пароль</a>
+      <a href={% url 'account_email' %} class="btn btn-outline-primary">Изменить email</a>
+    </div>
+{% endblock %}

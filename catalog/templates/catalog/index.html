@@ -1,0 +1,49 @@
+{% extends 'catalog/base.html' %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+        <p class="lead">
+          Данный контент помогает инженерам конструкторам,  работающим в системе преоктирования Creo, автоматизировать процесс создания схемы подключений электрических компонентов. 
+        </p>
+        <p class="lead">
+          Для того, чтобы начать прокладывать кабель в системе Creo Вам нужно вручную составлять файл описания схемы в "блокноте". Из-за сложности самого файла и из-за повторения множества компонентов описательной части - неизбежно возникают ошибки.</p><br><br>
+        <p class="lead">
+          Ниже указан пример файла инициализации который Вы сейчас должны прописывать вручную, и это только для подключения двух компонентов между собой, но в реальности таких компонентов могут быть десятки. 
+        </p><br>
+        <div class="scroll">
+          <p>! Wire and cable spools</p>
+          <br>
+          <p>NEW WIRE_SPOOL VVG3X2-5</p>
+          <p>PARAMETER MIN_BEND_RADIUS 111</p>
+          <p>PARAMETER THICKNESS 11.1</p>
+          <p>PARAMETER UNITS MM</p>
+          <p>PARAMETER COLOR RED</p>
+
+          <p>! Components and connectors </p>
+          <br>
+          <p>NEW CONNECTOR A1_E1</p>
+          <p>PARAMETER MODEL_NAME KOB1MH</p>
+          <p>PARAMETER NUM_OF_PINS 1</p>
+          <p>PIN E</p>
+          <p>PARAMETER ENTRY_PORT E</p>
+          <p>PARAMETER GROUPING ROUND</p>
+          <p>PARAMETER INTERNAL_LEN 200</p>
+
+          <p>NEW CONNECTOR PZT-001</p>
+          <p>PARAMETER MODEL_NAME datchic_pdk_67</p>
+          <p>PARAMETER NUM_OF_PINS 1</p>
+          <p>PIN DC1</p>
+          <p>PARAMETER ENTRY_PORT DC1</p>
+          <p>PARAMETER GROUPING ROUND</p>
+          <p>PARAMETER INTERNAL_LEN 50</p>
+
+          <p>! Wires and cables </p>
+          <br>
+          <p>NEW WIRE 1c VVG3X2-5</p>
+          <p>ATTACH PZT-001 DC1 A1_E1 E</p><br>
+        </div><br>
+
+        <p class="lead">
+          Теперь Вы можете легко составить свой проект на данном сайте. В базе данных компонентов и кабелей содержаться все актуальные применяемые комплектующие.
+          Ввойдите в свой аккаунт или зарегистрируйтесь, и можете начать работу!
+        </p><br>
+{% endblock %}
