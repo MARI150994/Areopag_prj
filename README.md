@@ -17,28 +17,28 @@ _python manage.py runserver_
 _**Краткое описание интерфейса**_
 * Главная страница (если Вы авторизованы)
 
-<img src="/home/mari/scrins/Index.png" width="1000"/>
+<img src="image_for_readme/Index.png" width="1000"/>
 
 * Вам доступны к просмотру и скачиванию проекты всех пользователей
 
-<img src="/home/mari/scrins/All_prj.png" width="1000"/>
+<img src="image_for_readme/All_prj.png" width="1000"/>
 
 * При нажатии "Просмотр" Вы получите всю информацию о данном проекте и сможете скачать или просмотреть его файл при 
 нажатии соответствующей ссылки в меню
 
-<img src="/home/mari/scrins/project_info.png" width="1000"/>
+<img src="image_for_readme/project_info.png" width="1000"/>
 
 * Пример самого простейшего сгенерированного файла инициализации, где описано подключение лишь двух кабелей к простешему оборудованию, реальные проекты намного больше.
 
-<img src="/home/mari/scrins/prj_file.png" width="1000"/>
+<img src="image_for_readme/prj_file.png" width="1000"/>
 
 * Для создания проекта выберите "Создать проект" в меню и введите номер проекта и описание. Номер проекта это поле типа 'slug'.
 * Далее просто следуйте инструкциям. Пример поэтапного создание проекта приведен на скриншотах далее. Формы ввода обрабатывают все недопустимые ошибки ввода, в том числе и дублирование наименований.
 
-<img src="/home/mari/scrins/select_cat.png" width="1000"/>
-<img src="/home/mari/scrins/enter_numbers.png" width="1000"/>
-<img src="/home/mari/scrins/select_model.png" width="1000"/>
-<img src="/home/mari/scrins/scheme.png" width="1000"/>
+<img src="image_for_readme/select_cat.png" width="1000"/>
+<img src="image_for_readme/enter_numbers.png" width="1000"/>
+<img src="image_for_readme/select_model.png" width="1000"/>
+<img src="image_for_readme/scheme.png" width="1000"/>
 
 После всех правильно подвтержденных действий Вы перейдете на страницу проекта и сгенерированный файл будет доступен для скачивания.
 
@@ -46,7 +46,7 @@ _**Краткое описание интерфейса**_
 для активации акканута необходимо пройти по ссылке в письме.
 Доступны сброс пароля, смена почты и прочие стандартные функции.
 
-<img src="/home/mari/scrins/register.png" width="1000"/>
+<img src="image_for_readme/register.png" width="1000"/>
 
 
 Базы данных 3д моделей содержат все актуальные доступные 3д модели используемого оборудовния.
