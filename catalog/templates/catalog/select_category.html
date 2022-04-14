@@ -8,7 +8,7 @@
 
   <form method="get" action={% url 'count_category' slug=prj.slug %} >
           {% for field in form %}
-            <h4 class="text-secondary">Шаг1. Выберите оборудование которое используется в проекте:</h4>
+            <h4 class="text-secondary">Выберите оборудование которое используется в проекте:</h4>
             {% for choice in field %}
               <div class="form-check mt-3 text-dark">
               {{ choice }}

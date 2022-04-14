@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from catalog.models import Category, Project, Cable, CATEGORY_CHOICES, Scheme
-from django.core.exceptions import NON_FIELD_ERRORS
+from django.core.exceptions import ValidationError
 
 
 class CreateProjectForm(ModelForm):
@@ -31,7 +31,7 @@ class SelectCategoryForm(forms.Form):
 
 class SelectModelForm(forms.Form):
     model = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-select"}))
-    symbol = forms.CharField(label='Обозначение на схеме', widget=forms.TextInput(attrs={"class": "form-control"}))
+    symbol = forms.SlugField(label='Обозначение на схеме', widget=forms.TextInput(attrs={"class": "form-control"}))
 
     def __init__(self, label, cat, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,9 +49,10 @@ class ResultForm(ModelForm):
     class Meta:
         model = Scheme
         fields = ['cable', 'cable_symbol', 'connect']
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                'unique_together': "Номер кабеля и место подключения совпадают!",
-            }
-        }
-        
+
+    def clean(self):
+        if self.cleaned_data['cable_symbol'] == self.cleaned_data['connect']:
+            raise ValidationError(
+                f'Обозначение {self.cleaned_data["cable_symbol"]} кабеля и места подключения совпадают'
+            )
+        return super().clean()

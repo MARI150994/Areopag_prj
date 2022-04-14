@@ -1,12 +1,11 @@
 {% extends 'catalog/base.html' %}
 {% block title %}Проекты{% endblock %}
 {% block content %}
-  <h1>Проекты {{ request.user.get_username }}</h1>
-  {% for prj in object_list %}
+  <h1>Проекты {{ title }}</h1>
+  {% for prj in project_list %}
     {% include 'include/card.html' %}  
   {% empty %}
-      У вас пока что нет проектов.
+      <p>Здесь пока что нет проектов.</p>
       <a href="{% url 'create_project' %}" class="btn btn-outline-primary">Создать проект</a>
   {% endfor %}
 {% endblock %}
-</ul>

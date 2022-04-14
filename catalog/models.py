@@ -13,14 +13,16 @@ CATEGORY_CHOICES = (
 )
 
 
+# category of equipment
 class Category(models.Model):
-    name = models.CharField(max_length=40, choices=CATEGORY_CHOICES, verbose_name='Выберите категории оборудования',
+    name = models.CharField(max_length=40, choices=CATEGORY_CHOICES, verbose_name='категории оборудования',
                             default='Двигатели', unique=True)
 
     def __str__(self):
         return self.name
 
 
+# name of 3d model from library
 class ModelName(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=50, help_text="enter correct model name or select from list", unique=True)
@@ -30,6 +32,7 @@ class ModelName(models.Model):
         return self.name
 
 
+# number of points to connect to equipment
 class Port(models.Model):
     name = models.CharField(max_length=10)
 
@@ -37,6 +40,7 @@ class Port(models.Model):
         return f'{self.name}'
 
 
+# available cables
 class Cable(models.Model):
     COLOR_CHOICES = (
         ('MAGENTA', 'Розовый'),
@@ -76,6 +80,7 @@ class Project(models.Model):
         return f"Project: {self.slug}"
 
 
+# selected in concrete project 3d model of equipment, not end point because each selected model must contain some data
 class SelectedModel(models.Model):
     model = models.ForeignKey(ModelName, on_delete=models.CASCADE)
     symbol = models.CharField('Обозначение на схеме', max_length=30, null=True)
@@ -85,6 +90,7 @@ class SelectedModel(models.Model):
         return f'Проект {self.project}, модель {self.model}, обозначение {self.symbol}'
 
 
+# final scheme, create for each port in selected model
 class Scheme(models.Model):
     model = models.ForeignKey(SelectedModel, on_delete=models.CASCADE, null=True, related_name='schemes')
     port = models.ForeignKey(Port, on_delete=models.CASCADE, null=True)
@@ -92,8 +98,3 @@ class Scheme(models.Model):
     cable_symbol = models.SlugField(max_length=12, null=True)
     connect = models.SlugField(max_length=12, null=True)
 
-    class Meta:
-        unique_together = ['cable_symbol', 'connect']
-
-    def get_absolute_url(self):
-        return reverse('scheme_item_edit', kwargs={'slug': self.model.project.slug, 'pk': self.pk})

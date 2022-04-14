@@ -1,4 +1,4 @@
-projects_all.html{% extends 'catalog/base.html' %}
+{% extends 'catalog/base.html' %}
 {% block title %}Финальное описание схемы{{% endblock %}
 {% block content %}
 {% include 'include/project_info.html' %} 
@@ -12,7 +12,7 @@ projects_all.html{% extends 'catalog/base.html' %}
           </div>
         {% endfor %}
       {% endif %}
-      {% for form, model, port in forms_test %}
+      {% for form, model, port in data_list %}
         <table class="table table-striped mt-5" style="background-color: #4bf2f240">
 
           <thead>

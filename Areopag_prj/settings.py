@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'debug_toolbar',
     # own
     'catalog.apps.CatalogConfig',
 ]
@@ -52,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Areopag_prj.urls'
@@ -145,3 +146,8 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 8
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 3600
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost"
+]

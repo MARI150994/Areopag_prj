@@ -13,5 +13,4 @@ urlpatterns = [
     path('project/<str:slug>/numbers', views.count_category, name='count_category'),
     path('project/<str:slug>/models', views.SelectModel.as_view(), name='select_models'),
     path('project/<str:slug>/scheme', views.CreateScheme.as_view(), name='create_scheme'),
-    # path('project/<str:slug>/scheme_item/<int:pk>/edit', views.SchemeItemEdit.as_view(), name='scheme_item_edit'),
 ]

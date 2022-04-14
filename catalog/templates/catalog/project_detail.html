@@ -1,0 +1,49 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+  
+{% endblock %}
+
+{% block content %}
+  <h3 class="text-secondary">
+    Проект:  {{ prj.slug }}
+  </h3>
+  <p>
+    Описание проекта: {{ prj.description }}
+  </p><br>
+  {% if prj.file %}
+    <p><a href={{ prj.file.url }} download>Скачать файл</a></p>
+    <p><a href={{ prj.file.url }}>Посмотреть файл</a></p>
+  {% endif %}
+      {% for res in result %}
+        <div class="w-50 p-3 mb-2 form-check mt-3 text-dark" style="background-color: #4bf2f240">
+          <table class="table table-striped mt-5">
+            <tbody>
+              <tr>
+                <td>Название модели</td>
+                <td>{{ res.model.model.name }}</td>
+              </tr>
+              <tr>
+                <td>Обозначение на схеме</td>
+                <td>{{ res.model.symbol }} (порт {{ res.port }})</td>
+              </tr>
+              <tr>
+                <td>Кабель</td>
+                <td>{{ res.cable }}</td>
+              </tr>
+              <tr>
+                <td>Обозначение кабеля</td>
+                <td>{{ res.cable_symbol }}</td>
+              </tr>
+              <tr>
+                <td>Место подключения</td>
+                <td>{{ res.connect }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      {% empty %}
+        <p>В проекте пока нет данных для отображения.</p>
+        <a href="{% url 'select_category' slug=prj.slug %}" class="btn btn-outline-primary">Создать</a>          
+      {% endfor %}
+{% endblock %}

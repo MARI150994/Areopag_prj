@@ -1,0 +1,13 @@
+<div class="w-50 card mb-4" >
+  <div class="card-header" >
+    {{ prj.date_pub }}
+  </div>
+  <div class="card-body" >
+    <h5 class="card-title">{{ prj.slug}}</h5>
+    <p class="card-text">{{ prj.description }}</p>
+    <p class="card-text">{{ prj.data }}</p>
+    <p class="card-text">Автор: {{ prj.author }}</p>
+    <a href="{{ prj.get_absolute_url }}" class="btn btn-outline-primary">Просмотр</a>
+  </div>
+</div>
+

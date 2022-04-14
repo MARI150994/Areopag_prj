@@ -23,19 +23,11 @@ def validate_get_request_counts(counts):
 
 def generate_file(project):
     with open(f"catalog/files/{project.slug}.txt", "w") as f:
-        f.write(generator(project.slug))
-        project = Project.objects.get(slug=project.slug)
+        f.write(generator(project))
+    with open(f"catalog/files/{project.slug}.txt") as f:
+        if project.file:
+            project.file.delete()
         project.file.save(f'{project.slug}.txt', File(f))
-    # SaveFileProject(f"catalog/files/{slug}.txt", slug)
-
-
-# #TODO why class
-# class SaveFileProject:
-#     def __init__(self, filepath, slug):
-#         self.filepath = filepath
-#         self.project = Project.objects.get(slug=slug)
-#         with open(self.filepath) as f:
-#             self.project.file.save(f'{slug}.txt', File(f))
 
 
 def generator(project):
@@ -49,13 +41,13 @@ def generator(project):
 
 class GeneratorFile:
     def __init__(self, project):
-        self.project = project.prefetch_related('models')
+        self.project = project
         self.selected_model_list = []
         self.scheme_object_list = []
         self.cable_object_list = []
 
     def prepare_data(self):
-        for selected_model in self.project[0].models.all():
+        for selected_model in self.project.models.all():
             self.selected_model_list.append(selected_model)
             for scheme in selected_model.schemes.all():
                 self.scheme_object_list.append(scheme)

@@ -1,36 +1,34 @@
 from collections import namedtuple
-import json
-import requests
+from typing import List
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, FormView, View
-from django.http import HttpResponse, HttpResponseBadRequest
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.sessions.models import Session
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, View
+from django.http import HttpResponseBadRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
-from .models import Category, ModelName, Project, SelectedModel, Scheme, CATEGORY_CHOICES
+from .models import Project, SelectedModel, Scheme
 from .forms import SelectCategoryForm, SelectModelForm, EnterNumberForm, ResultForm, CreateProjectForm
 from .utils import validate_get_request_categories, validate_get_request_counts, generate_file
 
 
+# home page
 def index(request):
     return render(request, 'catalog/index.html')
 
 
+# user profile and option for it
 @login_required()
 def user_profile(request):
     user = request.user
     return render(request, 'catalog/user_profile.html', {'user': user})
 
 
+# create new project and connect to user
 class CreateProject(LoginRequiredMixin, CreateView):
     template_name = 'catalog/create_project.html'
     form_class = CreateProjectForm
-    redirect_field_name = None
 
     def form_valid(self, form):
         new_prj = form.save(commit=False)
@@ -38,24 +36,34 @@ class CreateProject(LoginRequiredMixin, CreateView):
         new_prj.save()
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse('select_category', kwargs={'slug': self.object.slug})
 
-# TODO for what two several templates for project use get context
+
+# show users projects
 class ProjectsListUser(LoginRequiredMixin, ListView):
     model = Project
-    template_name = 'catalog/projects.html'
 
-    # redirect_field_name = None
-
-    # show only author's projects
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(author=self.request.user)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.request.user.get_username
+        return context
 
+
+# show all projects
 class ProjectsListAll(LoginRequiredMixin, ListView):
     model = Project
-    template_name = 'catalog/projects_all.html'
+
     # redirect_field_name = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'всех пользователей'
+        return context
 
 
 class ProjectDetail(LoginRequiredMixin, DetailView):
@@ -66,11 +74,11 @@ class ProjectDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['category'] =  self.get_object().selectedcategory_set.all()
-        context['result'] = Scheme.objects.filter(model__project=self.get_object())
+        context['result'] = Scheme.objects.filter(model__project=self.object)
         return context
 
 
+# select category of equipment
 @login_required(redirect_field_name=None)
 def select_category(request, slug):
     project = get_object_or_404(Project, slug=slug)
@@ -78,7 +86,7 @@ def select_category(request, slug):
     return render(request, 'catalog/select_category.html', {'form': form, 'prj': project})
 
 
-# function create forms to enter number of selected categories
+# function create forms to enter number of selected categories, such forms as number of selected categories
 @login_required(redirect_field_name=None)
 def count_category(request, slug):
     project = get_object_or_404(Project, slug=slug)
@@ -90,26 +98,28 @@ def count_category(request, slug):
         for i, cat in enumerate(categories):
             forms.append(EnterNumberForm(label=cat, category=cat))
     else:
-        return HttpResponseBadRequest()
+        return HttpResponseBadRequest('Данные по указанному запросу не существуют')
     return render(request, 'catalog/count_category.html', {'forms': forms, 'prj': project})
 
 
-# select model from chosen categories and numbers of this categories
+# select concrete name 3d model of equipment (from selected categories and numbers of this categories)
 class SelectModel(LoginRequiredMixin, View):
-    redirect_field_name = None
     model = SelectedModel
 
-    # validate request
+    # validate request params
     def dispatch(self, request, *args, **kwargs):
         self.slug = kwargs.get('slug')
         self.project = get_object_or_404(Project, slug=self.slug)
+        # check categories from request
         self.categories = validate_get_request_categories(request.GET.getlist('category'))
+        # check integer number from request
         self.counts = validate_get_request_counts(request.GET.getlist('count'))
         if self.categories and self.counts and len(self.categories) == len(self.counts):
             return super().dispatch(request, *args, **kwargs)
         else:
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest('Данные по указанному запросу не существуют')
 
+    # create several form for selection 3d model of equipment
     def get(self, request, *args, **kwargs):
         # prepare list of unbounded forms
         forms = []
@@ -143,8 +153,7 @@ class SelectModel(LoginRequiredMixin, View):
         errors = []
         symbols = []
         models = []
-
-        # validate each form and add errors in error (symbols can't repeat)
+        # validate each form and add errors in error (symbols between several forms can't repeat)
         for form in bound_forms:
             if form.is_valid():
                 if form.cleaned_data['symbol'] not in symbols:
@@ -155,7 +164,6 @@ class SelectModel(LoginRequiredMixin, View):
                 models.append(form.cleaned_data['model'])
             else:
                 all_form_is_valid = False
-
         if all_form_is_valid:
             # delete old selected models if exist
             if self.project.models.count():
@@ -172,13 +180,15 @@ class SelectModel(LoginRequiredMixin, View):
         return render(request, 'catalog/select_models.html', context=context)
 
 
+# several forms where user must connect each selected 3d model to some point and selecte cable for it
 class CreateScheme(LoginRequiredMixin, View):
 
     def dispatch(self, request, *args, **kwargs):
         self.slug = kwargs.get('slug')
         self.project = get_object_or_404(Project, slug=self.slug)
+        # nmaedtuple more readble
         self.Data = namedtuple('Data', ['form', 'model', 'port'])
-        self.data_list = []
+        self.data_list: List[Data] = []
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -194,7 +204,7 @@ class CreateScheme(LoginRequiredMixin, View):
                         port=port
                     )
                 )
-        context = {'forms_test': self.data_list, 'prj': self.project}
+        context = {'data_list': self.data_list, 'prj': self.project}
         return render(request, 'catalog/create_scheme.html', context=context)
 
     def post(self, request, *args, **kwargs):
@@ -245,16 +255,8 @@ class CreateScheme(LoginRequiredMixin, View):
                     cable_symbol=cables_des[i],
                     connect=connects[i]
                 )
-            # generate file contained all this data
-            # generate_file(slug=self.slug)
-            generate_file(ptoject=self.project)
+            # generate file contained all this data and bound file with current Project
+            generate_file(self.project)
             return redirect('project_detail', slug=self.slug)
-        context = {'forms_test': self.data_list, 'custom_errors': errors, 'prj': self.project}
+        context = {'data_list': self.data_list, 'custom_errors': errors, 'prj': self.project}
         return render(request, 'catalog/create_scheme.html', context=context)
-
-
-# TODO
-# class SchemeItemEdit(FormView):
-#     model = Scheme
-#     template_name = 'catalog/scheme_item_edit.html'
-#     form_class = ResultForm
